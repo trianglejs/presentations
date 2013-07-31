@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test Application</title>
+</head>
+<body ng-app="NowPlaying">
+	
+	<div ng-controller="MyCtrl">
+		<input type="text" ng-model="username">
+		<h1>Hello {{username}}</h1>
+
+		<h2>My Favorite Libraries</h2>
+		<ul>
+			<li ng-repeat="library in libraries">{{library}}</li>
+		</ul>
+		<button ng-click="doSomething()">Click Me!</button>
+	</div>
+
+	<div ng-controller="SecondCtrl">
+		<ul>
+			<li ng-repeat="library in libraries">{{library}}</li>
+		</ul>
+	</div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script>
+	var app = angular.module('NowPlaying', []);
+
+
+	app.controller('MyCtrl', ['$scope', 'NowPlayingSvc', function($scope, NowPlayingSvc) {
+		$scope.doSomething = function() {
+			NowPlayingSvc.libraries.push('booty.js');
+		};
+
+		$scope.username = 'Kyle Buchanan';
+		
+		/*$scope.libraries = [
+			'jQuery',
+			'Backbone',
+			'Underscore',
+			'Angular'
+		];*/
+
+		/*
+		 * instead of using libraries from the scope, let's
+		 * use the libraries in the service
+		 */
+		$scope.libraries = NowPlayingSvc.libraries;
+	}]);
+
+	app.controller('SecondCtrl', ['$scope', 'NowPlayingSvc', function($scope, NowPlayingSvc) {
+
+		$scope.libraries = NowPlayingSvc.libraries;
+	}]);
+
+	app.factory('NowPlayingSvc', [function() {
+		return {
+			libraries: [
+				'MooTools',
+				'Scriptaculous',
+				'Ember'
+			]
+		};
+	}]);
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
