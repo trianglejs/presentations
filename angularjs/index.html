@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+
+<!--
+  Google HTML5 slide template
+
+  Authors: Luke Mahé (code)
+           Marcin Wichary (code and design)
+           
+           Dominic Mazzoni (browser compatibility)
+           Charles Chen (ChromeVox support)
+
+  URL: http://code.google.com/p/html5slides/
+-->
+
+<html>
+    <head>
+        <title>AngularJS and Yeoman</title>
+
+        <meta charset='utf-8'>
+        <script src="slides.js"></script>
+        <style type="text/css">
+            .light {
+                color: #ccc
+            }
+        </style>
+    </head>
+
+  <body style='display: none'>
+    <section class='slides layout-widescreen template-default'>
+
+        <article>
+            <h1>AngularJS and Yeoman</h1>
+            <p>Kyle Buchanan<br />July 30, 2013</p>
+        </article>
+
+        <article>
+            <h3>About Me</h3>
+            <ul>
+                <li>Front-end Developer for BCBSNC for ~3 years</li>
+                <li>Developing with AngularJS 7 months</li>
+                <li>1 of 3 organizers for <a href="http://www.meetup.com/Triangle-JavaScript/">Triangle JavaScript Meetup</a></li>
+            </ul>
+            <p><a href="mailto:kylebuch8@gmail.com">kylebuch8@gmail.com</a></p>
+            <p><a href="https://plus.google.com/111228173224427278855/">Kyle Buchanan on Google+</a></p>
+        </article>
+
+        <article>
+            <h3>Agenda</h3>
+            <ul>
+                <li>Intro to AngularJS</li>
+                <li>A little AngularJS coding</li>
+                <li>Intro to Yeoman</li>
+                <li>A little AngularJS coding with Yeoman</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>What is AngularJS all about?</h3>
+            <p>AngularJS lets you write client-side web applications as if you had a smarter browser.</p>
+            <ul>
+                <li>HTML as your template language (can be extended)</li>
+                <li>Two-way data binding between views and models</li>
+                <li>Encourages structure and testing</li>
+                <li>Dependency injection</li>
+            </ul>
+            <br><br>
+            <img src="images/AngularJS-large.png" alt="">
+        </article>
+
+        <article>
+            <h3>Let's Create Our First Application</h3>
+            <p>ng-app</p>
+            <pre>
+&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;NowPlaying&lt;/title&gt;
+&lt;/head&gt;
+&lt;body ng-app="NowPlaying"&gt;
+    
+&lt;/body&gt;
+&lt;/html&gt;
+            </pre>
+            <p>ng-app can be applied to any part of a document and multiple ng-apps can exist on the same page</p>
+        </article>
+
+        <article>
+            <h3>Our First Application in Javascript</h3>
+            <p>Use the same string from ng-app as the 1st parameter in the module method</p>
+            <p>We used ng-app="NowPlaying"</p>
+            <pre>
+(function() {
+    'use strict';
+
+    angular.module('NowPlaying', []);
+}());  
+            </pre>
+        </article>
+
+        <article>
+            <h3>Angular Controllers</h3>
+            <ul>
+                <li>Have their own scope</li>
+                <li>Use the ng-controller directive</li>
+                <li><strong>Best practice:</strong> end the name of the controller with Ctrl</li>
+            </ul>
+            <p>HTML:<p>
+            <pre>
+&lt;div ng-controller="MainCtrl"&gt;
+        
+&lt;/div&gt;
+            </pre>
+        </article>
+
+        <article>
+            <h3>Create a Controller - Continued</h3>
+            <p>Javascript:</p>
+            <pre>
+(function() {
+    'use strict';
+
+    angular.module('NowPlaying', []);
+    angular.module('NowPlaying')
+        .controller('MainCtrl', ['$scope', function($scope) {
+
+        }]);
+}());
+            </pre>
+        </article>
+
+        <article>
+            <h3>Create an HTML Template</h3>
+            <ul>
+                <li>Created right in the code</li>
+                <li>Uses {{variable name}}</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Our Movie Template - Before</h3>
+            <pre>
+&lt;div class="container" ng-controller="MainCtrl"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="span3"&gt;
+            &lt;img src="http://content8.flixster.com/movie/11/17/21/11172174_pro.jpg"&gt;
+        &lt;/div&gt;
+        &lt;div class="span9"&gt;
+            &lt;h1&gt;Despicable Me 2&lt;/h1&gt;
+            &lt;h2&gt;&lt;small class="muted"&gt;Critics Rating:&lt;/small&gt; 76%&lt;/h2&gt;
+            &lt;p&gt;Universal Pictures and Illumination Entertainment's worldwide blockbuster Despicable Me entertained audiences around the globe in 2010, grossing more than $540 million and becoming the 10th-biggest animated motion picture in U.S. history. In summer 2013, get ready for more Minion madness in Despicable Me 2. (c) Universal&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;                
+            </pre>
+        </article>
+
+        <article>
+            <h3>Our Movie Template - After</h3>
+            <pre>
+&lt;div class="container" ng-controller="MainCtrl"&gt;
+    &lt;div class="row"&gt;
+        &lt;div class="span3"&gt;
+            &lt;img ng-src="{{movie.poster}}"&gt;
+        &lt;/div&gt;
+        &lt;div class="span9"&gt;
+            &lt;h1&gt;{{movie.title}}&lt;/h1&gt;
+            &lt;h2&gt;&lt;small class="muted"&gt;Critics Rating:&lt;/small&gt; {{movie.rating}}%&lt;/h2&gt;
+            &lt;p&gt;{{movie.synopsis}}&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </pre>
+
+            <p>Notice ng-src on the image tag</p>
+        </article>
+
+        <article>
+            <h3>What's Next?</h3>
+            <p>Let's see what an array of movies might look like</p>
+            <p>Use the ng-repeat directive to iterate over an array</p>
+            <pre>
+&lt;div ng-repeat="movie in movies"&gt;
+    &lt;!-- looping!!! --&gt;
+&lt;/div&gt;
+            </pre>
+        </article>
+
+        <article>
+            <h3>Let's Create a Service</h3>
+            <ul>
+                <li>Use the factory method and return an object</li>
+                <li><strong>Best practice:</strong> end the name of the service with Svc</li>
+            </ul>
+            <pre>
+angular.module('NowPlaying')
+    .factory('NowPlayingSvc', [function() {
+        return {
+            data: {
+                title: 'Despicable Me 2'
+            }
+        };
+    }]);
+            </pre>
+        </article>
+
+        <article>
+            <h3>Inject the Service into our Controller</h3>
+            <pre>
+angular.module('NowPlaying')
+    .controller(['$scope', 'NowPlayingSvc', function($scope, NowPlayingSvc) {
+        $scope.data = NowPlayingSvc.data;
+    }]);
+            </pre>
+        </article>
+
+        <article>
+            <h3>Adding Interactivity</h3>
+            <p>We'll create a button and use the ng-click directive to save a movie</p>
+            <p>HTML:</p>
+            <pre>
+&lt;button class="btn btn-warning" ng-click="toggleSave(movie)"&gt;
+    I Must See This
+&lt;/button&gt;
+            </pre>
+            <p>Javascript:</p>
+            <pre>
+$scope.toggleSave = function(movie) {
+    movie.saved = (movie.saved) ? false : true;
+};
+            </pre>
+        </article>
+
+        <article>
+            <h3>Initial AngularJS Thoughts and Questions</h3>
+            <ul>
+                <li>Steep learning curve</li>
+                <li>Why do they put everything in the global scope in their examples?</li>
+                <li>Are we really adding custom attributes with functions as strings?
+                    <pre>
+&lt;a href="" ng-click="archive()"&gt;archive&lt;/a&gt;
+                    </pre>
+                </li>
+                <li>2-way data binding: what is really going on behind the scenes and why are my templates magically updating?</li>
+                <li>How are we going to get and pass data around in the application?</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Steep Learning Curve</h3>
+            <ul>
+                <li>Decent documentation, not great</li>
+                <li>New nomenclature: services, directives, factory, injection</li>
+                <li>If you're used to using Backbone.js and Require.js, you'll find yourself looking for similar functions in AngularJS. Don't do that.</li>
+                <li>However, typical MV* patterns still apply and modularity is still encouraged</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Why do they put everything in the global scope in their examples?</h3>
+            <ul>
+                <li>Simplicity is my guess</li>
+                <li>There are some easy ways to prevent this using IIFEs</li>
+            </ul>
+            <pre>
+(function() {
+    "use strict";
+
+    angular.module("myApp").controller("ResultListCtrl", function() {
+        // my controller does cool stuff in here
+    });
+})();
+            </pre>
+        </article>
+
+        <article>
+            <h3>Are we really adding custom attributes with functions as strings?</h3>
+            <ul>
+                <li>Seems like a step backward</li>
+            </ul>
+            <pre>
+&lt;div ng-controller="ResultlistCtrl"&gt;
+    &lt;a href="#" ng-click="doSomething()"&gt;Click Me!&lt;/a&gt;
+&lt;/div&gt;
+            </pre>
+            <ul>
+                <li>However, we now have better visibility into how code works with quick glace at HTML</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>2-way data binding: what is really going on behind the scenes and why are my templates magically updating?</h3>
+            <ul>
+                <li>Coolest feature in AngularJS - <a href="http://docs.angularjs.org/guide/dev_guide.templates.databinding">Data binding in AngularJS</a></li>
+            </ul>
+            <pre>
+var UserCtrl = function($scope) {
+    $scope.username = "DecimateTheWeak";
+}
+            </pre>
+            <pre>
+&lt;div ng-controller="UserCtrl"&gt;
+    &lt;p&gt;Welcome {{username}}!&lt;/p&gt;
+&lt;/div&gt;
+            </pre>
+            <pre>
+Welcome DecimateTheWeak!
+            </pre>
+        </article>
+
+        <article>
+            <h3>How are we going to get and pass data around in the application?</h3>
+            <ul>
+                <li>Services to the rescue!</li>
+                <li>Inject these into any of your controllers</li>
+            </ul>
+            <pre>
+(function() {
+    angular.module("myApp").factory("CentersService", function() {
+        var centers = [];
+
+        var CentersService = {
+            centers : function() {
+                return centers;
+            }
+        };
+
+        return CentersService;
+    });
+});
+            </pre>
+        </article>
+
+        <article>
+            <h3>How are we going to get and pass data around in the application? - CONTINUED</h3>
+            <ul>
+                <li>
+                    Easy to hook-up
+                    <pre>
+(function() {
+    angular.module("myApp").controller("ResultListCtrl", 
+        ["$scope", "CentersService", function($scope, 
+        CentersService) {
+
+        $scope.results = CentersService.centers;
+        $scope.outsideNC = CentersService.centersOutsideNC;
+    }]);
+})();
+                    </pre>
+                </li>
+                <li>Similar to a global events dispatcher</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Bonus Time</h3>
+            <ul>
+                <li>Filters</li>
+                <li>Looping in a template</li>
+                <li>ng-hide</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Filters</h3>
+            <p>Need all phone numbers to be formatted the same?</p>
+            <pre>
+&lt;a href="tel://{{result.address.phoneNo|phone}}" class="btn"&gt;
+    {{result.address.phoneNo}}
+&lt;/a&gt;
+            </pre>
+            <p>And my filter code</p>
+            <pre>
+app.filter("phone", function() {
+    return function(phone) {
+        phone = phone.replace(/[- ()]/g, "");
+        return "1" + phone;
+    } 
+});
+            </pre>
+        </article>
+
+        <article>
+            <h3>Looping in a template</h3>
+            <p>Need to iterate over a result set?</p>
+            <pre>
+&lt;div ng-repeat="result in results"&gt;
+    &lt;h4&gt;{{result.orgName}}&lt;h4&gt;
+    &lt;p&gt;
+        {{result.address.address1}}&lt;br&gt;
+        {{result.address.city}}, {{result.address.state}} 
+        {{result.address.postalCode}}
+    &lt;/p&gt;
+&lt;/div&gt;
+            </pre>
+            <p>Decimated!</p>
+        </article>
+
+        <article>
+            <h3>ng-hide</h3>
+            <p>Need something to be conditionally displayed?</p>
+            <pre>
+&lt;div id="outsideNcMessage" class="container-margin" 
+    ng-hide="!outsideNC()"&gt;
+    &lt;h4&gt;Outside of North Carolina?&lt;/h4&gt;
+    &lt;p&gt;Enter a North Carolina address or call 1-800-810-2583 for help. Call the number on the back of your member ID card for support specific to your plan.&lt;/p&gt;
+    &lt;p&gt;&lt;a href="tel://18008102583" class="btn btn-primary"&gt;1-800-810-2583&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+            </pre>
+            <p>Brutal!</p>
+        </article>
+
+        <article>
+            <h3>AngularJS Resources</h3>
+            <ul>
+                <li><a href="http://angularjs.org/">AngularJS Documentation</a></li>
+                <li><a href="http://www.egghead.io/">Egghead</a></li>
+                <li><a href="http://it-ebooks.info/book/2076/">AngularJS eBook</a></li>
+                <li><a href="https://plus.google.com/u/0/communities/115368820700870330756">AngularJS on Google+</a></li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Enough about talk about AngularJS</h3>
+            <p>Let's code something!</p>
+        </article>
+
+        <article>
+            <h3>Yeoman - <a href="http://yeoman.io/">http://yeoman.io/</a></h3>
+            <p>Workflow tool comprised of three tools meant to improve productivity</p>
+            <ul>
+                <li><a href="https://github.com/yeoman/yo">Yo</a> scaffolds out a new application, writing your Grunt configuration and pulling in relevant Grunt tasks that you might need for your build.</li>
+                <li><a href="http://gruntjs.com/">Grunt</a> is used to build, preview and test your project, thanks to help from tasks curated by the Yeoman team and grunt-contrib.</li>
+                <li><a href="http://bower.io/">Bower</a> is used for dependency management, so that you no longer have to manually download and manage your scripts.</li>
+            </ul>
+            <img src="images/toolset.png" class="yoimage">
+        </article>
+
+        <article>
+            <h3>Getting started with Yeoman</h3>
+            <p>Make sure you have <a href="http://nodejs.org/">Node.js</a>, <a href="http://git-scm.org/">Git</a> and optionally, <a href="http://ruby-lang.org/">Ruby</a> and <a href="http://compass-style.org/install">Compass</a> (if you plan to use Compass).</p>
+            <h4>Install!</h4>
+            <pre>npm install -g yo</pre>
+            <h4>Scaffold an AngularJS Project</h4>
+            <pre>
+npm install -g generator-angular  # install generator
+yo angular                        # scaffold out a AngularJS project
+grunt test                        # test your app
+grunt server                      # preview your app
+grunt                             # build the application for deployment
+            </pre>
+        </article>
+
+        <article>
+            <h3>Working with Yeoman and AngularJS - <a href="https://github.com/yeoman/generator-angular">https://github.com/yeoman/generator-angular</a></h3>
+            <p>Use the AngularJS generator to quickly build out the necessary files</p>
+            <pre>
+yo angular:route user
+            </pre>
+            <p>Creates app/scripts/controllers/user.js</p>
+            <pre>
+angular.module('myApp').controller('UserCtrl', function ($scope) {
+  // ...
+});
+            </pre>
+        </article>
+
+        <article>
+            <h3>Angular Generators with Yeoman - Continued</h3>
+            <p>Creates app/views/user.html</p>
+            <pre>
+&lt;p&gt;This is the myroute view&lt;/p&gt;
+            </pre>
+            <p>Other goodies:</p>
+            <ul>
+                <li>Adds the user.js script tag to the index.html file</li>
+                <li>Adds the route to your router</li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Now we can be dangerous!</h3>
+            <br><br><br>
+            <img src="images/yeoman-logo.png" alt="" style="vertical-align: middle;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 140px; margin-top: 50px; display: inline-block;">+</span>&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/AngularJS-large.png" alt="" style="vertical-align: middle;">
+        </article>
+
+        <article>
+            <h3>Yeoman Resources</h3>
+            <ul>
+                <li><a href="http://yeoman.io/">Yeoman Site</a></li>
+                <li><a href="https://github.com/yeoman/generator-angular">Yeoman AngularJS Generator</a></li>
+            </ul>
+        </article>
+
+        <article>
+            <h3>Let's Code Something with AngularJS and Yeoman</h3>
+            <ul>
+                <li>Create an AngularJS application using Yeoman - NowPlaying</li>
+                <li>Scaffolding</li>
+                <li>Create a service</li>
+                <li>Create a new route - (controller and view)</li>
+            </ul>
+        </article>
+
+    </section>
+
+  </body>
+</html>
