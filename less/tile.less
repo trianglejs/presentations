@@ -1,0 +1,190 @@
+body {
+    padding : 0;
+    margin  : 20px;
+    height  : 100%;
+}
+
+/* bootstrap overrides */
+.tile {
+    .btn,
+    .btn-large,
+    .btn-inverse {
+        border-radius : 0;
+        box-shadow    : none;
+        border-color  : none;
+    }
+
+    input {
+        border-radius : 0;
+    }
+}
+
+/* font definitions */
+@proxima-bold-base-url    : '../fonts/ProximaNovaSoft-Bold/ProximaNovaSoft-Bold-webfont';
+@proxima-regular-base-url : '../fonts/ProximaNovaSoft-Regular/ProximaNovaSoft-Regular-webfont';
+
+@font-face {
+    font-family    : 'ProximaBold';
+    src            : url('@{proxima-bold-base-url}.eot?') format('eot'),
+                     url('@{proxima-bold-base-url}.woff') format('woff'),
+                     url('@{proxima-bold-base-url}.ttf') format('truetype');
+    font-weight    : normal;
+    text-rendering : optimizelegibility;
+}
+
+@font-face {
+    font-family    : 'ProximaRegular';
+    src            : url('@{proxima-regular-base-url}.eot?') format('eot'),
+                     url('@{proxima-regular-base-url}.woff') format('woff'),
+                     url('@{proxima-regular-base-url}.ttf') format('truetype');
+    font-weight    : normal;
+    text-rendering : optimizelegibility;
+}
+
+/* mixin helpers */
+.proxima-bold ( @size : inherit ) {
+    font-family : 'ProximaBold',
+                  'Trebuchet MS',
+                  Tahoma,
+                  sans-serif;
+
+    font-weight : normal;
+    font-size   : @size;
+}
+
+.proxima-regular ( @size : inherit ) {
+    font-family : 'ProximaRegular',
+                  'Trebuchet MS',
+                  Tahoma,
+                  sans-serif;
+
+    font-weight : normal;
+    font-size   : @size;
+}
+
+.transform(@string){
+    -webkit-transform : @string;
+       -moz-transform : @string;
+        -ms-transform : @string;
+         -o-transform : @string;
+            transform : @string;
+}
+
+.tile {
+    margin        : 0 0 20px 20px;
+    float         : left;
+    width         : 200px;
+    height        : 200px;
+    cursor        : pointer;
+    /*border-radius : 4px;*/
+    
+    -webkit-transition       : -webkit-transform 1s;
+       -moz-transition       :    -moz-transform 1s;
+         -o-transition       :      -o-transform 1s;
+            transition       :         transform 1s;
+    -webkit-transform-style  : preserve-3d;
+       -moz-transform-style  : preserve-3d;
+         -o-transform-style  : preserve-3d;
+            transform-style  : preserve-3d;
+    -webkit-transform-origin : right center;
+       -moz-transform-origin : right center;
+         -o-transform-origin : right center;
+            transform-origin : right center;
+}
+
+.tile.flipped {
+    .transform(translateX( -100% ) rotateY( -180deg ));
+}
+
+.tile figure {
+    margin        : 0;
+    display       : block;
+    height        : 100%;
+    width         : 100%;
+    /*border-radius : 4px;*/
+    position      : absolute;
+    
+    -webkit-backface-visibility : hidden;
+       -moz-backface-visibility : hidden;
+         -o-backface-visibility : hidden;
+            backface-visibility : hidden;
+}
+
+.tile .front {
+    background : #56A0D3;
+
+    p {
+        line-height    : 40px;
+        text-align     : center;
+        color          : #fff;
+        text-transform : uppercase;
+
+        .proxima-regular(18px);
+    }
+    
+    fieldset {
+        margin     : 0;
+        position   : absolute;
+        bottom     : 0;
+        width      : 100%;
+        float      : right;
+        opacity    : 0;
+  
+        -webkit-transition : opacity 0.3s ease-in-out;
+           -moz-transition : opacity 0.3s ease-in-out;
+                transition : opacity 0.3s ease-in-out;
+        
+        .btn-wrap {
+            position : absolute;
+            bottom   : 0;
+            right    : 0;
+            width    : 100%;
+        }
+      
+        button {
+            margin-bottom : 5px;
+            margin-right  : 5px;
+            float         : right;
+        }
+    }
+}
+
+.tile .front:hover {
+    fieldset {
+      opacity : 1;
+    }
+}
+
+.tile .back {
+    background : #f5f4ee;
+    .transform(rotateY( 180deg ));
+
+    fieldset {
+        margin : 5px;
+
+        input {
+            width : 176px;
+        }
+
+        .btn-wrap {
+            position : absolute;
+            bottom   : 0;
+            right    : 0;
+            width    : 100%;
+        }
+
+        button {
+            margin-bottom : 5px;
+            margin-right  : 5px;
+            float         : right;
+        }
+    }
+}
+
+.tile.flipped .front,
+.tile.flipped .front:hover {
+    button {
+      visibility : hidden;
+      opacity : 0;
+    }
+}
